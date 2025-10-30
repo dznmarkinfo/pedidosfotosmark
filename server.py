@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
+from flask import send_from_directory
 from werkzeug.utils import secure_filename
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
@@ -8,6 +9,17 @@ import os
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['PDF_FOLDER'] = 'pedidos_generados'
+
+# ✅ Ruta para descargar el PDF
+@app.route('/descargar/<filename>')
+def descargar(filename):
+    return send_from_directory(
+        app.config['PDF_FOLDER'],
+        filename,
+        as_attachment=True
+    )
+
+# (el resto de tu código va acá... ejecutar PDF, formulario, etc)
 
 # Crea carpetas si no existen
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -135,17 +147,17 @@ def enviar():
             if observaciones:
                 c.setFont("Helvetica-Oblique", 9)
                 c.drawString(1 * cm, hoja_h - 1.6 * cm, f"Obs: {observaciones[:90]}{'…' if len(observaciones)>90 else ''}")
-
     c.save()
 
-    return f"""
-    <h2>✅ Pedido recibido de {nombre}</h2>
-    <p>PDF generado en: <b>{pdf_path}</b></p>
-    <p>Cantidad declarada: {cantidad} | Papel: {papel}</p>
-    <a href="/">⬅ Volver</a>
-    """
+    # --- Construir rutas del PDF ---
+    filename = f"pedido_{nombre.replace(' ', '_')}.pdf"
+    pdf_path = os.path.join(app.config['PDF_FOLDER'], filename)
 
+    # --- Descargar PDF al usuario ---
+    return render_template(
+    'pedido_listo.html',
+    filename=filename
+)
 
 if __name__ == '__main__':
-    # Si Windows pregunta por firewall, permití acceso local.
     app.run(debug=True)

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Pedido recibido ✅</title>
+<style>
+body {
+    background: linear-gradient(120deg, #e8dcc2, #c9b89e);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: "Poppins", sans-serif;
+}
+
+.card {
+    background: rgba(255,255,255,0.8);
+    padding: 35px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    text-align: center;
+    max-width: 450px;
+}
+
+.card h2 {
+    font-size: 26px;
+    margin-bottom: 15px;
+    color: #6b4f2a;
+    font-weight: 600;
+}
+
+.card p {
+    font-size: 17px;
+    margin-bottom: 25px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 22px;
+    background: #6b4f2a;
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.btn:hover {
+    background: #87663c;
+}
+
+.back {
+    margin-top: 12px;
+    display: block;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+    <h2>✅ ¡Pedido creado!</h2>
+    <p>Tu archivo está listo para descargar.</p>
+
+    <a class="btn" href="/descargar/{{ filename }}">⬇️ Descargar PDF</a>
+
+    <a class="back" href="/">Volver a la página principal</a>
+</div>
+
+</body>
+</html>
